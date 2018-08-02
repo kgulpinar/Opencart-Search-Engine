@@ -1,0 +1,24 @@
+@media (max-width: 991px) {
+    .sm-margin-bottom-10 {
+        margin-bottom: 10px;
+    }
+}
+
+.margin-bottom-10 {
+    margin-bottom: 10px;
+}
+
+.exclude-categories,
+.exclude-products {
+    height: 150px;
+    overflow: auto;
+}
+
+.dropdown-menu li a {
+    cursor: pointer;
+}
+
+#textarea-css {
+    min-height: 400px;
+    font-family: 'Monospace', 'Courier New', sans-serif;
+}

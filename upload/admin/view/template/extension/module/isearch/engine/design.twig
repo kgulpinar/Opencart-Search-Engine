@@ -1,0 +1,157 @@
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-selector"><span data-toggle="tooltip" title="{{ help_selector }}">{{ entry_selector }}</span></label>
+    <div class="col-sm-10">
+        <input type="text" name="selector" value="{{ selector }}" placeholder="{{ placeholder_selector }}" id="input-selector" class="form-control" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="select-width"><span data-toggle="tooltip" title="{{ help_width }}">{{ entry_width }}</span></label>
+    <div class="col-sm-10">
+        <div class="row" role="dimension-container">
+            <div role="dimension-select" class="col-xs-12 col-sm-6 sm-margin-bottom-10">
+                <select name="width" id="select-width" class="form-control" data-dimension-hidden="fixed">
+                    <option value="fixed" {{ width == 'fixed' ? 'selected' }}>{{ text_fixed }}</option>
+                    <option value="responsive" {{ width == 'responsive' ? 'selected' }}>{{ text_responsive }}</option>
+                </select>
+            </div>
+
+            <div role="dimension-value" class="col-xs-12 col-sm-6">
+                <div class="dropdown input-group" role="dropdown-select" data-name="width_unit">
+                    <input type="number" name="width_value" value="{{ width_value }}" placeholder="{{ placeholder_width_value }}" class="form-control text-right" />
+
+                    <div class="dropdown-menu pull-right">
+                        <li class="{{ width_unit == 'px' ? 'active' }}"><a data-value="px">px</a></li>
+                        <li class="{{ width_unit == 'em' ? 'active' }}"><a data-value="em">em</a></li>
+                        <li class="{{ width_unit == '%' ? 'active' }}"><a data-value="%">%</a></li>
+                    </div>
+
+                    <span class="input-group-addon btn btn-default" data-toggle="dropdown"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="select-height"><span data-toggle="tooltip" title="{{ help_height }}">{{ entry_height }}</span></label>
+    <div class="col-sm-10">
+        <div class="row" role="dimension-container">
+            <div role="dimension-select" class="col-xs-12 col-sm-6 sm-margin-bottom-10">
+                <select name="height" id="select-height" class="form-control" data-dimension-hidden="maximum">
+                    <option value="maximum" {{ height == 'maximum' ? 'selected' }}>{{ text_maximum }}</option>
+                    <option value="auto" {{ height == 'auto' ? 'selected' }}>{{ text_auto }}</option>
+                </select>
+            </div>
+
+            <div role="dimension-value" class="col-xs-12 col-sm-6">
+                <div class="dropdown input-group" role="dropdown-select" data-name="height_unit">
+                    <input type="number" name="height_value" value="{{ height_value }}" placeholder="{{ placeholder_height_value }}" class="form-control text-right" />
+
+                    <div class="dropdown-menu pull-right">
+                        <li class="{{ height_unit == 'px' ? 'active' }}"><a data-value="px">px</a></li>
+                        <li class="{{ height_unit == 'em' ? 'active' }}"><a data-value="em">em</a></li>
+                        <li class="{{ height_unit == '%' ? 'active' }}"><a data-value="%">%</a></li>
+                    </div>
+
+                    <span class="input-group-addon btn btn-default" data-toggle="dropdown"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="select-highlight"><span data-toggle="tooltip" title="{{ help_highlight }}">{{ entry_highlight }}</span></label>
+    <div class="col-sm-10">
+        <div class="row" role="dimension-container">
+            <div role="dimension-select" class="col-xs-12 col-sm-6 sm-margin-bottom-10">
+                <select name="highlight" id="select-highlight" class="form-control" data-dimension-hidden="1">
+                    <option value="1" {{ highlight ? 'selected' }}>{{ text_yes }}</option>
+                    <option value="0" {{ not highlight ? 'selected' }}>{{ text_no }}</option>
+                </select>
+            </div>
+
+            <div role="dimension-value" class="col-xs-12 col-sm-6">
+                <div role="colorpicker" class="input-group">
+                    <span class="input-group-addon"><i></i></span>
+                    <input type="text" name="highlight_value" value="{{ highlight_value }}" placeholder="{{ placeholder_highlight_value }}" class="form-control" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="input-product-limit"><span data-toggle="tooltip" title="{{ help_product_limit }}">{{ entry_product_limit }}</span></label>
+    <div class="col-sm-10">
+        <input type="number" name="product_limit" value="{{ product_limit }}" placeholder="{{ placeholder_product_limit }}" id="input-product-limit" class="form-control" min="1" max="100" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="select-suggestion"><span data-toggle="tooltip" title="{{ help_suggestion }}">{{ entry_suggestion }}</span></label>
+    <div class="col-sm-10">
+        <div class="row" role="dimension-container">
+            <div role="dimension-select" class="col-xs-12 col-sm-6 sm-margin-bottom-10">
+                <select name="suggestion" id="select-suggestion" class="form-control" data-dimension-hidden="1">
+                    <option value="1" {{ suggestion ? 'selected' }}>{{ text_yes }}</option>
+                    <option value="0" {{ not suggestion ? 'selected' }}>{{ text_no }}</option>
+                </select>
+            </div>
+
+            <div role="dimension-value" class="col-xs-12 col-sm-6">
+                <input type="number" name="suggestion_limit" value="{{ suggestion_limit }}" placeholder="{{ placeholder_suggestion_limit }}" class="form-control" min="1" max="100" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="select-image"><span data-toggle="tooltip" title="{{ help_image }}">{{ entry_image }}</span></label>
+    <div class="col-sm-10">
+        <div class="row" role="dimension-container">
+            <div role="dimension-select" class="col-xs-12 col-sm-6 sm-margin-bottom-10">
+                <select name="image" id="select-image" class="form-control" data-dimension-hidden="1">
+                    <option value="1" {{ image ? 'selected' }}>{{ text_yes }}</option>
+                    <option value="0" {{ not image ? 'selected' }}>{{ text_no }}</option>
+                </select>
+            </div>
+
+            <div role="dimension-value" class="col-xs-12 col-sm-6">
+                <div class="input-group">
+                    <input type="number" name="image_width" value="{{ image_width }}" placeholder="{{ placeholder_image_width }}" class="form-control text-right" min="1" max="1000" />
+                    <span class="input-group-addon"><i class="fa fa-times"></i></span>
+                    <input type="number" name="image_height" value="{{ image_height }}" placeholder="{{ placeholder_image_height }}" class="form-control" min="1" max="1000" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="select-model"><span data-toggle="tooltip" title="{{ help_model }}">{{ entry_model }}</span></label>
+    <div class="col-sm-10">
+        <select name="model" id="select-model" class="form-control">
+            <option value="1" {{ model ? 'selected' }}>{{ text_yes }}</option>
+            <option value="0" {{ not model ? 'selected' }}>{{ text_no }}</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="select-price"><span data-toggle="tooltip" title="{{ help_price }}">{{ entry_price }}</span></label>
+    <div class="col-sm-10">
+        <select name="price" id="select-price" class="form-control">
+            <option value="1" {{ price ? 'selected' }}>{{ text_yes }}</option>
+            <option value="0" {{ not price ? 'selected' }}>{{ text_no }}</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="textarea-css"><span data-toggle="tooltip" title="{{ help_css }}">{{ entry_css }}</span></label>
+    <div class="col-sm-10">
+        <textarea name="css" class="form-control" id="textarea-css" placeholder="{{ placeholder_css }}">{{ css }}</textarea>
+    </div>
+</div>

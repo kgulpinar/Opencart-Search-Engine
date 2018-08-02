@@ -1,0 +1,79 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+            </div>
+            <h1>{{ heading_dashboard }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if error %}
+        <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error }}
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+        {% if success %}
+        <div class="alert alert-success alert-dismissible"><i class="fa fa-check"></i> {{ success }}
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="pull-right">
+                    <a href="{{ create }}" class="btn btn-success btn-xs"><i class="fa fa-plus"></i> {{ button_create }}</a>
+                </div>
+                <h3 class="panel-title"><i class="fa fa-gears"></i> {{ text_engines }}</h3>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>{{ text_name }}</th>
+                                <th>{{ text_status }}</th>
+                                <th>{{ text_store }}</th>
+                                <th class="text-right">{{ text_action }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for module in modules %}
+                                <tr>
+                                    <td>{{ module.name }}</td>
+                                    <td>{{ module.status }}</td>
+                                    <td>
+                                        {% for store in module.stores %}
+                                            <div>
+                                                {{ store.name }}
+                                                {% if store.is_default %}
+                                                    <strong>{{ text_default }}</strong>
+                                                {% endif %}
+                                            </div>
+                                        {% else %}
+                                            {{ text_no_store }}
+                                        {% endfor %}
+                                    </td>
+                                    <td class="text-right">
+                                        <a href="{{ module.edit }}" data-toggle="tooltip" title="{{ button_module_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{ module.delete }}" data-toggle="tooltip" title="{{ button_module_delete }}" class="btn btn-danger" role="delete-button" data-confirm="{{ text_confirm }}"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td class="text-center" colspan="4">{{ no_result }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ footer }}

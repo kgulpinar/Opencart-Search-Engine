@@ -1,0 +1,440 @@
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="select-language"><span data-toggle="tooltip" title="{{ help_language }}">{{ entry_language }}</span></label>
+    <div class="col-sm-10">
+        <select name="language" id="select-language" class="form-control">
+            <option value="single" {{ language == 'single' ? 'selected' }}>{{ text_single_language }}</option>
+            <option value="all" {{ language == 'all' ? 'selected' }}>{{ text_all_language }}</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="select-instant"><span data-toggle="tooltip" title="{{ help_instant }}">{{ entry_instant }}</span></label>
+    <div class="col-sm-10">
+        <select name="instant" id="select-instant" class="form-control">
+            <option value="" {{ not instant ? 'selected' }}>{{ text_disabled }}</option>
+            <option value="ajax" {{ instant == 'ajax' ? 'selected' }}>{{ text_enabled_ajax }}</option>
+            <option value="browser" {{ instant == 'browser' ? 'selected' }}>{{ text_enabled_browser }}</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="select-standard"><span data-toggle="tooltip" title="{{ help_standard }}">{{ entry_standard }}</span></label>
+    <div class="col-sm-10">
+        <select name="standard" id="select-standard" class="form-control">
+            <option value="1" {{ standard ? 'selected' }}>{{ text_isearch_engine }}</option>
+            <option value="0" {{ not standard ? 'selected' }}>{{ text_default_opencart }}</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="select-strictness"><span data-toggle="tooltip" title="{{ help_strictness }}">{{ entry_strictness }}</span></label>
+    <div class="col-sm-10">
+        <select name="strictness" id="select-strictness" class="form-control">
+            <option value="high" {{ strictness == 'high' ? 'selected' }}>{{ text_high }}</option>
+            <option value="moderate" {{ strictness == 'moderate' ? 'selected' }}>{{ text_moderate }}</option>
+            <option value="low" {{ strictness == 'low' ? 'selected' }}>{{ text_low }}</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="select-sort"><span data-toggle="tooltip" title="{{ help_sort }}">{{ entry_sort }}</span></label>
+    <div class="col-sm-10">
+        <select name="sort" id="select-sort" class="form-control">
+            <optgroup label="{{ text_general }}">
+                <option value="p.sort_order" {{ sort == 'p.sort_order' ? 'selected' }}>{{ text_sort_order }}</option>
+                <!--option value="advancedsorting" {{ sort == 'advancedsorting' ? 'selected' }}>{{ text_advancedsorting }}</option-->
+            </optgroup>
+            <optgroup label="{{ text_match }}">
+                {% for key, text in sort_matches %}
+                    <option value="{{ key }}" {{ sort == key ? 'selected' }}>{{ text }}</option>
+                {% endfor %}
+            </optgroup>
+            <optgroup label="{{ text_length }}">
+                {% for key, text in sort_lengths %}
+                    <option value="{{ key }}" {{ sort == key ? 'selected' }}>{{ text }}</option>
+                {% endfor %}
+            </optgroup>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="select-singularisation"><span data-toggle="tooltip" title="{{ help_singularization }}">{{ entry_singularization }}</span></label>
+    <div class="col-sm-10">
+        <select name="singularization" id="select-singularization" class="form-control">
+            <option value="1" {{ singularization ? 'selected' }}>{{ text_enabled }}</option>
+            <option value="0" {{ not singularization ? 'selected' }}>{{ text_disabled }}</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-2 control-label"><span data-toggle="tooltip" title="{{ help_exclude }}">{{ entry_exclude }}</span></label>
+    <div class="col-md-10">
+        <div id="exclude">
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <button id="add-exclude" class="btn btn-default"><i class="fa fa-plus"></i> {{ button_add_exclude }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-2 control-label"><span data-toggle="tooltip" title="{{ help_spell }}">{{ entry_spell }}</span></label>
+    <div class="col-md-10">
+        <div id="spell">
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <button id="add-spell" class="btn btn-default"><i class="fa fa-plus"></i> {{ button_add_spell }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // Common functions and handlers
+    var findMaxIndex = function(elements, key_selector) {
+        var max = 0;
+
+        $(elements).each(function(index, element) {
+            var val = parseInt($(element).attr(key_selector));
+
+            if (max <= val) {
+                max = val+1;
+            }
+        });
+
+        return max;
+    }
+
+    var toArray = function(data) {
+        return $.map(data, function(value) {
+            return value;
+        });
+    }
+
+    // Preload AJAX search
+    {% if prepare_browser %}
+        $(document).ready(function() {
+            $.ajax({
+                url: '{{ url_prepare_browser }}',
+                beforeSend: function() {
+                    $('#ajaxLoadSpinner')
+                        .addClass('fa-spin')
+                        .attr('title', '{{ text_preparing_browser_data }}')
+                        .tooltip();
+                },
+                complete: function() {
+                    $('#ajaxLoadSpinner')
+                        .removeClass('fa-spin')
+                        .tooltip('destroy');
+                }
+            });
+        });
+    {% endif %}
+
+    // Spell Check
+    $(document).ready(function() {
+        var spell = {{ spell }};
+
+        var addSpell = function(data) {
+            var key = findMaxIndex($('#spell *[data-key]'), 'data-key');
+
+            $('#spell').append(`
+                <div class="row rule-group margin-bottom-10">
+                    <div class="col-xs-9 col-sm-10">
+                        <div class="input-group" data-key="${key}">
+                            <input placeholder="{{ placeholder_search }}" class="form-control" name="spell[${key}][search]" value="${data.search}" />
+                            <span class="input-group-addon"><i class="fa fa-arrow-right"></i></span>
+                            <input placeholder="{{ placeholder_replace }}" class="form-control" name="spell[${key}][replace]" value="${data.replace}" />
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-2 text-right">
+                        <button class="btn btn-default" role="delete-button" data-confirm="{{ text_confirm }}" data-remove=".rule-group"><i class="fa fa-trash"></i></button>
+                    </div>
+                </div>
+            `);
+        }
+
+        $('#add-spell').click(function(e) {
+            e.preventDefault();
+
+            addSpell({
+                search: '',
+                replace: ''
+            });
+        });
+
+        if (spell) {
+            $(toArray(spell)).each(function(index, element) {
+                addSpell(element);
+            });
+        }
+    });
+
+    // Excludes
+    $(document).ready(function() {
+        var exclude = {{ exclude }};
+
+        var typeQuantity = function(key, data) {
+            return `
+                <div class="dropdown input-group" role="dropdown-select" data-name="exclude[${key}][data][operator]">
+                    <span class="input-group-addon btn btn-default" data-toggle="dropdown"></span>
+
+                    <div class="dropdown-menu">
+                        <li class="${ data.operator == 'lt' ? 'active' : '' }"><a data-value="lt">&lt;</a></li>
+                        <li class="${ data.operator == 'gt' ? 'active' : '' }"><a data-value="gt">&gt;</a></li>
+                        <li class="${ data.operator == 'eq' ? 'active' : '' }"><a data-value="eq">&#61;</a></li>
+                        <li class="${ data.operator == 'ne' ? 'active' : '' }"><a data-value="ne">&ne;</a></li>
+                    </div>
+
+                    <input class="form-control" type="number" name="exclude[${key}][data][value]" value="${data.value}" />
+                </div>
+            `;
+        }
+
+        var typeStatus = function(key, data) {
+            return `
+                <select class="form-control" name="exclude[${key}][data][value]">
+                    <option value="1" ${ data.value == '1' ? 'selected' : '' }>{{ text_enabled }}</option>
+                    <option value="0" ${ data.value == '0' ? 'selected' : '' }>{{ text_disabled }}</option>
+                </select>
+            `;
+        }
+
+        var typeCategory = function(key, data) {
+            var categories = '';
+
+            if (data) {
+                $(toArray(data)).each(function(index, element) {
+                    categories += `
+                        <div class="exclude-category" data-id="${element.category_id}" data-index="${index}"><i class="fa fa-minus-circle"></i> ${element.name}
+                            <input type="hidden" name="exclude[${key}][data][${index}][category_id]" value="${element.category_id}" />
+                        </div>
+                    `;
+                });
+            }
+
+            return `
+                <input type="text" name="category" value="" placeholder="{{ entry_category }}" class="autocomplete-category form-control" />
+                <div class="well well-sm exclude-categories">
+                    ${categories}
+                </div>
+            `;
+        }
+
+        var typeProduct = function(key, data) {
+            var products = '';
+
+            if (data) {
+                $(toArray(data)).each(function(index, element) {
+                    products += `
+                        <div class="exclude-product"><i class="fa fa-minus-circle"></i> ${element.name}
+                            <input type="hidden" name="exclude[${key}][data][${index}][product_id]" value="${element.product_id}" />
+                        </div>
+                    `;
+                });
+            }
+
+            return `
+                <input type="text" name="product" value="" placeholder="{{ entry_product }}" class="autocomplete-product form-control" />
+                <div class="well well-sm exclude-products">
+                    ${products}
+                </div>
+            `;
+        }
+
+        var typeStockStatus = function(key, data) {
+            return `
+                <select class="form-control" name="exclude[${key}][data][stock_status_id]">
+                    {% for stock_status in stock_statuses %}
+                        <option value="{{ stock_status.stock_status_id }}" ${ data.stock_status_id == '{{ stock_status.stock_status_id }}' ? 'selected' : '' }>{{ stock_status.name }}</option>
+                    {% endfor %}
+                </select>
+            `;
+        }
+
+        var excludeRule = function(key, data) {
+            switch (data.type) {
+                case 'quantity' : {
+                    return typeQuantity(key, data.data);
+                }
+                case 'status' : {
+                    return typeStatus(key, data.data);
+                }
+                case 'category_status' : {
+                    return typeStatus(key, data.data);
+                }
+                case 'category' : {
+                    return typeCategory(key, data.data);
+                }
+                case 'product' : {
+                    return typeProduct(key, data.data);
+                }
+                case 'stock_status' : {
+                    return typeStockStatus(key, data.data);
+                }
+            }
+        }
+
+        var defaultData = function(type) {
+            var d = {
+                type: type,
+                data: null
+            }
+
+            switch (type) {
+                case 'quantity' : {
+                    d.data = {
+                        operator: 'eq',
+                        value: 0
+                    };
+                } break;
+                case 'status' :
+                case 'category_status' : {
+                    d.data = {
+                        value: 0
+                    };
+                } break;
+                
+                case 'category' : 
+                case 'product' : {
+                    d.data = [];
+                } break;
+                case 'stock_status' : {
+                    d.data = {
+                        stock_status_id: 0
+                    };
+                } break;
+            }
+
+            return d;
+        }
+
+        var addExclude = function(data) {
+            var key = findMaxIndex($('#exclude *[data-key]'), 'data-key');
+
+            $('#exclude').append(`
+                <div class="row rule-group">
+                    <div class="col-sm-4 col-xs-12 margin-bottom-10">
+                        <select name="exclude[${key}][type]" class="form-control exclude-type" data-key="${key}">
+                            <option value="quantity" ${ data.type == 'quantity' ? 'selected' : '' }>{{ text_quantity }}</option>
+                            <option value="status" ${ data.type == 'status' ? 'selected' : '' }>{{ text_status }}</option>
+                            <option value="category_status" ${ data.type == 'category_status' ? 'selected' : '' }>{{ text_category_status }}</option>
+                            <option value="category" ${ data.type == 'category' ? 'selected' : '' }>{{ text_category }}</option>
+                            <option value="product" ${ data.type == 'product' ? 'selected' : '' }>{{ text_product }}</option>
+                            <option value="stock_status" ${ data.type == 'stock_status' ? 'selected' : '' }>{{ text_stock_status }}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6 col-xs-9 exclude-rule margin-bottom-10">
+                        ${excludeRule(key, data)}
+                    </div>
+                    <div class="col-sm-2 col-xs-3 text-right margin-bottom-10">
+                        <button class="btn btn-default" role="delete-button" data-confirm="{{ text_confirm }}" data-remove=".rule-group"><i class="fa fa-trash"></i></button>
+                    </div>
+                </div>
+            `);
+        }
+
+        if (exclude) {
+            $(toArray(exclude)).each(function(index, element) {
+                addExclude(element);
+            });
+        }
+
+        $('#add-exclude').click(function(e) {
+            e.preventDefault();
+
+            addExclude(defaultData('quantity'));
+        });
+
+        $(document).on('change', '.exclude-type', function(e) {
+            $(this).closest('.rule-group').find('.exclude-rule').html(
+                excludeRule($(this).attr('data-key'), defaultData($(this).val()))
+            );
+        });
+
+        $(document).on('focus', '.autocomplete-category', function() {
+            var element = this;
+
+            $(element).autocomplete({
+                'source': function(request, response) {
+                    $.ajax({
+                        url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+                        dataType: 'json',
+                        success: function(json) {
+                            response($.map(json, function(item) {
+                                return {
+                                    label: item['name'],
+                                    value: item['category_id']
+                                }
+                            }));
+                        }
+                    });
+                },
+                'select': function(item) {
+                    var key = $(element).closest('.rule-group').find('.exclude-type').attr('data-key');
+                    var index = findMaxIndex($(element).closest('.exclude-rule').find('.exclude-category'), 'data-index');
+
+                    $(element).val('');
+
+                    $(element).parent().find('.exclude-category[data-id="' + item.value + '"]').remove();
+
+                    $(element).parent().find('.exclude-categories').append(`
+                        <div class="exclude-category" data-id="${item.value}" data-index="${index}"><i class="fa fa-minus-circle"></i> ${item.label}
+                            <input type="hidden" name="exclude[${key}][data][${index}][category_id]" value="${item.value}" />
+                        </div>
+                    `);
+                }
+            });
+        });
+
+        $(document).on('focus', '.autocomplete-product', function() {
+            var element = this;
+
+            $(element).autocomplete({
+                'source': function(request, response) {
+                    $.ajax({
+                        url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+                        dataType: 'json',
+                        success: function(json) {
+                            response($.map(json, function(item) {
+                                return {
+                                    label: item['name'],
+                                    value: item['product_id']
+                                }
+                            }));
+                        }
+                    });
+                },
+                'select': function(item) {
+                    var key = $(element).closest('.rule-group').find('.exclude-type').attr('data-key');
+                    var index = findMaxIndex($(element).closest('.exclude-rule').find('.exclude-product'), 'data-index');
+
+                    $(element).val('');
+
+                    $(element).parent().find('.exclude-product[data-id="' + item.value + '"]').remove();
+
+                    $(element).parent().find('.exclude-products').append(`
+                        <div class="exclude-product" data-id="${item.value}" data-index="${index}"><i class="fa fa-minus-circle"></i> ${item.label}
+                            <input type="hidden" name="exclude[${key}][data][${index}][product_id]" value="${item.value}" />
+                        </div>
+                    `);
+                }
+            });
+        });
+
+        $(document).on('click', '.exclude-category > .fa-minus-circle, .exclude-product > .fa-minus-circle', function() {
+            $(this).parent().remove();
+        });
+    });
+</script>

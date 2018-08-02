@@ -1,0 +1,51 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <button type="submit" form="form-engine" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+                <a role="delete-button" data-confirm="{{ text_confirm }}" href="{{ suggestion_clear }}" data-toggle="tooltip" title="{{ button_suggestion_clear }}" class="btn btn-warning"><i class="fa fa-trash"></i></a>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+            </div>
+            <h1>{{ heading_module }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if error %}
+        <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error }}
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+        {% if success %}
+        <div class="alert alert-success alert-dismissible"><i class="fa fa-check"></i> {{ success }}
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+        
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i id="ajaxLoadSpinner" class="fa fa-cog"></i> {{ text_edit_engine }}</h3>
+            </div>
+            <div class="panel-body">
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-engine" class="form-horizontal">
+                    <ul class="nav nav-tabs" role="persist-tabs">
+                        {% for id, tab in tabs %}
+                            <li><a href="#tab-{{ id }}" data-toggle="tab"><i class="{{ tab.icon }}"></i> {{ tab.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <div class="tab-content">
+                        {% for id, tab in tabs %}
+                            <div class="tab-pane" id="tab-{{ id }}">{{ tab.html }}</div>
+                        {% endfor %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{ footer }}

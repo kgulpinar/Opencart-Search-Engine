@@ -1,0 +1,102 @@
+<script type="text/template" role="isearch-container">
+    <div class="isearch-container" role="isearch-container-{id}">
+        {content}
+    </div>
+</script>
+
+<script type="text/template" role="isearch-loading">
+    <div class="isearch-loading text-center">
+        <i class="fa fa-spin fa-circle-o-notch"></i> {text}
+    </div>
+</script>
+
+<script type="text/template" role="isearch-nothing">
+    <div class="isearch-nothing text-center">{text}</div>
+</script>
+
+<script type="text/template" role="isearch-more">
+    <a role="isearch-tab" class="isearch-more text-center" href="{href}">{text}</a>
+</script>
+
+<script type="text/template" role="isearch-price">
+    <span class="isearch-price-value">{price}</span>
+</script>
+
+<script type="text/template" role="isearch-special">
+    <span class="isearch-price-value isearch-price-special">{special}</span><br /><span class="isearch-old-value">{price}</span>
+</script>
+
+<script type="text/template" role="isearch-product">
+    <a role="isearch-tab" href="{href}" class="isearch-product">
+        {% if image %}
+        <div class="pull-left isearch-product-image">
+            <img src="{image}" alt="{alt}" />
+        </div>
+        {% endif %}
+
+        <div class="row isearch-product-info">
+            <div class="col-xs-7 col-lg-8">
+                <h4 class="isearch-heading-product">{name}</h4>
+                {% if model %}
+                    <span class="isearch-model">{model}</span>
+                {% endif %}
+            </div>
+            <div class="col-xs-5 col-lg-4 text-right">
+                {% if price %}
+                    <div class="isearch-price">
+                        {price}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </a>
+</script>
+
+<script type="text/template" role="isearch-suggestion">
+    <a role="isearch-tab" href="{href}" class="isearch-suggestion">{keyword}</a>
+</script>
+
+<script type="text/template" role="isearch-heading-suggestion">
+    <h3 class="isearch-heading isearch-heading-suggestion">{{ text_heading_suggestion }}</h3>
+</script>
+
+<script type="text/template" role="isearch-heading-product">
+    <h3 class="isearch-heading isearch-heading-product">{{ text_heading_results }}</h3>
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('{{ selector }}').iSearch({
+            ajaxURL: '{{ ajax }}',
+            browserURL: '{{ browser }}',
+            moreURL: '{{ more }}',
+            delay: 250,
+            fetchDataURL: '{{ fetch_data }}',
+            heightType: '{{ height }}',
+            heightUnit: '{{ height_unit }}',
+            heightValue: {{ height_value }},
+            highlight: !!{{ highlight }},
+            highlightColor: '{{ highlight_value }}',
+            autoscaleImages: true,
+            showImages: !!{{ image }},
+            imageWidth: {{ image_width }},
+            languageId: {{ language_id }},
+            localStoragePrefix : '{{ local_storage_prefix }}',
+            minWidth: '330px',
+            mobileScrollSpeed: 400,
+            productLimit : {{ product_limit }},
+            singularization: !!{{ singularization }},
+            sort: '{{ sort }}',
+            spell: {{ spell }},
+            strictness: '{{ strictness }}',
+            type: '{{ type }}',
+            widthType: '{{ width }}',
+            widthUnit: '{{ width_unit }}',
+            widthValue: {{ width_value }},
+            zIndex: 999999,
+            textMore: '{{ text_more }}',
+            textLoading: '{{ text_loading }}',
+            textNothing: '{{ text_nothing }}',
+        });
+    });
+</script>

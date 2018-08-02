@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-sm-2">
+        <ul class="nav nav-pills nav-stacked" role="persist-tabs">
+            {% for language in languages %}
+                <li><a href="#tab-localisation-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" /> {{ language.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col-sm-10">
+        <div class="tab-content">
+            {% for language in languages %}
+                <div class="tab-pane" id="tab-localisation-{{ language.language_id }}">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-heading-suggestion-{{ language.language_id }}">{{ entry_heading_suggestion }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="text[{{ language.language_id }}][heading_suggestion]" value="{{ text[language.language_id].heading_suggestion }}" placeholder="{{ placeholder_heading_suggestion }}" id="input-heading-suggestion-{{ language.language_id }}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-heading-results-{{ language.language_id }}">{{ entry_heading_results }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="text[{{ language.language_id }}][heading_results]" value="{{ text[language.language_id].heading_results }}" placeholder="{{ placeholder_heading_results }}" id="input-heading-results-{{ language.language_id }}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-more-{{ language.language_id }}">{{ entry_more }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="text[{{ language.language_id }}][more]" value="{{ text[language.language_id].more }}" placeholder="{{ placeholder_more }}" id="input-more-{{ language.language_id }}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-loading-{{ language.language_id }}">{{ entry_loading }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="text[{{ language.language_id }}][loading]" value="{{ text[language.language_id].loading }}" placeholder="{{ placeholder_loading }}" id="input-loading-{{ language.language_id }}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-nothing-{{ language.language_id }}">{{ entry_nothing }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="text[{{ language.language_id }}][nothing]" value="{{ text[language.language_id].nothing }}" placeholder="{{ placeholder_nothing }}" id="input-nothing-{{ language.language_id }}" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

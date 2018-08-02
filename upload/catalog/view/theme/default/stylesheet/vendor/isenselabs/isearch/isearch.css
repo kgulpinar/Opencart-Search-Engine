@@ -1,0 +1,75 @@
+.isearch-container {
+    padding: 0;
+    background-color: white;
+    -moz-box-shadow: 0 1px 2px #ccc;
+    -webkit-box-shadow: 0 1px 2px #CCC;
+    box-shadow: 0 1px 2px #CCC;
+    margin-top: 1px;
+}
+
+.isearch-loading,
+.isearch-nothing {
+    padding: 20px 10px;
+}
+
+.isearch-heading {
+    padding: 0 10px;
+    color: #444;
+}
+
+.isearch-product {
+    clear: both;
+}
+
+.isearch-product,
+.isearch-suggestion,
+.isearch-more {
+    padding: 5px 10px;
+    display: block;
+    text-decoration: none;
+    color: #444;
+}
+
+.isearch-more {
+    padding: 10px;
+    border-top: 1px solid #eee;
+}
+
+.isearch-product:focus,
+.isearch-suggestion:focus,
+.isearch-more:focus {
+    background-color: #fafafa;
+    text-decoration: none;
+    color: #444;
+}
+
+.isearch-product:hover, .isearch-product.active,
+.isearch-suggestion:hover, .isearch-suggestion.active,
+.isearch-more:hover, .isearch-more.active {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+}
+
+.isearch-heading-product {
+    color: #444;
+    word-break: break-word;
+}
+
+.isearch-model {
+    color: #999;
+}
+
+.isearch-price {
+    padding: 10px 0;
+    color: #444;
+}
+
+.isearch-price-special {
+    font-weight: bold;
+}
+
+.isearch-old-value {
+    color: #999;
+    text-decoration: line-through;
+}

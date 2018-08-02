@@ -1,0 +1,134 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+            </div>
+            <h1>{{ heading_help }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if error %}
+        <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error }}
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+        {% if success %}
+        <div class="alert alert-success alert-dismissible"><i class="fa fa-check"></i> {{ success }}
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-user"></i> {{ text_license_your_license }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form method="POST" action="{{ help }}" class="form-horizontal">
+                            <button type="submit" class="save-changes hidden"></button>
+                            {% if licenced %}
+                                <input name="cHRpbWl6YXRpb24ef4fe" type="hidden" value="{{ license_encoded }}" />
+                                <input name="OaXRyb1BhY2sgLSBDb21" type="hidden" value="{{ licensed_on }}" />
+
+                                <div class="alert alert-success text-center">{{ text_license_valid }} [<a href="http://isenselabs.com/users/purchases" target="_blank">{{ text_license_manage }}</a>]</div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{ text_license_holder }}</label>
+                                    <div class="col-sm-8 form-control-static">
+                                        {{ customer }}
+                                    </div>
+                                </div>
+                            
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{ text_license_registered_domains }}</label>
+                                    <div class="col-sm-8 form-control-static">
+                                        {% for domain in domains %}
+                                            <div><i class="fa fa-check"></i> {{ domain }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{ text_license_expires }}</label>
+                                    <div class="col-sm-8 form-control-static">{{ license_expiry_date }}</div>
+                                </div>
+                            {% else %}
+                                <div class="form-control-static">
+                                    <label for="moduleLicense">{{ text_license_enter_code }}</label>
+                                    <input id="moduleLicense" type="text" class="licenseCodeBox form-control" placeholder="{{ text_license_placeholder }}" value="" />
+                                </div>
+
+                                <div class="form-control-static">
+                                    <button type="button" class="btn btn-success btnActivateLicense"><i class="icon-ok"></i> {{ text_license_activate }}</button>
+                                    <div class="pull-right">
+                                        <a target="_blank "href="http://isenselabs.com/users/purchases/" class="btn btn-link small-link"><i class="fa fa-external-link"></i> {{ text_license_get_code }}</a>
+                                    </div>
+                                </div>
+
+                                <div class="licenseAlerts"></div>
+                                <div class="licenseDiv"></div>
+
+                                <script type="text/javascript">
+                                    var domainraw = location.protocol + '//' + location.host;
+                                    var domain = btoa(domainraw);
+                                    var timenow = {{ now }};
+                                    var MID = '{{ mid }}';
+                                </script>
+                                <script type="text/javascript" src="//isenselabs.com/external/validate/"></script>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-users"></i> {{ text_license_get_support }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="thumbnail">
+                                    <img alt="{{ text_license_community }}" src="view/image/isearch/community.png">
+                                    <div class="caption text-center">
+                                        <h3>{{ text_license_community }}</h3>
+                                        <p>{{ text_license_community_info }}</p>
+                                        <p style="padding-top: 5px;"><a href="http://isenselabs.com/forum" target="_blank" class="btn btn-lg btn-default">{{ text_license_forums }}</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="thumbnail">
+                                    <img data-src="holder.js/300x200" alt="Ticket support" src="view/image/isearch/tickets.png">
+                                    <div class="caption text-center">
+                                        <h3>{{ text_license_tickets }}</h3>
+                                        <p>{{ text_license_tickets_info }}</p>
+                                        <p style="padding-top: 5px;"><a href="{{ ticket_open }}" target="_blank" class="btn btn-lg btn-default">{{ text_license_tickets_open }}</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="thumbnail">
+                                    <img alt="{{ text_license_presale }}" src="view/image/isearch/pre-sale.png">
+                                    <div class="caption text-center">
+                                        <h3>{{ text_license_presale }}</h3>
+                                        <p>{{ text_license_presale_info }}</p>
+                                        <p style="padding-top: 5px;"><a href="https://isenselabs.com/pages/premium-services" target="_blank" class="btn btn-lg btn-default">{{ text_license_presale_bump }}</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ footer }}

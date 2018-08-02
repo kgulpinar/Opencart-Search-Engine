@@ -1,0 +1,52 @@
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="select-status"><span data-toggle="tooltip" title="{{ help_status }}">{{ entry_status }}</span></label>
+    <div class="col-sm-10">
+        <select name="status" id="select-status" class="form-control">
+            <option value="1" {{ status ? 'selected' }}>{{ text_enabled }}</option>
+            <option value="0" {{ not status ? 'selected' }}>{{ text_disabled }}</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group required">
+    <label class="col-sm-2 control-label" for="input-name"><span data-toggle="tooltip" title="{{ help_name }}">{{ entry_name }}</span></label>
+    <div class="col-sm-10">
+        <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" maxlength="64" />
+        {% if error_name %}
+            <div class="text-danger">{{ error_name }}</div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="form-group required">
+    <label class="col-sm-2 control-label">
+        {{ entry_store }}
+    </label>
+    <div class="col-sm-10">
+        {% for item in stores %}
+            <div class="form-control-static">
+                <label><input type="checkbox" value="1" name="store[{{ item.store_id }}]" {{ store[item.store_id] and not error_store ? 'checked' }} /> {{ item.name }} {{ item.is_default ? text_default }}</label>
+            </div>
+        {% endfor %}
+        {% if error_store %}
+            <div class="text-danger">{{ error_store }}</div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="form-group required">
+    <label class="col-sm-2 control-label">
+        {{ entry_search_in }}
+    </label>
+    <div class="col-sm-10">
+        {% for key, field in fields %}
+            <div class="form-control-static">
+                <label><input type="checkbox" value="1" name="search_in[{{ key }}]" {{ search_in[key] and not error_search_in ? 'checked' }} /> {{ field.name }}</label>
+            </div>
+        {% endfor %}
+        {% if error_search_in %}
+            <div class="text-danger">{{ error_search_in }}</div>
+        {% endif %}
+    </div>
+</div>
+

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>iSearch and Journal2 Super Filter Compatibility</name>
+    <code>isearch_journal2_super_filter_compatibility</code>
+    <version>5.0.2</version>
+    <author>iSenseLabs</author>
+    
+    <file path="catalog/model/journal2/super_filter.php">
+        <operation>
+            <search><![CDATA[if((isset($data['search']) && strlen($data['search']) > 0) || (isset($data['tags']) && !empty($data['tags']))) {]]></search>
+            <add position="before"><![CDATA[
+                $this->load->model('extension/module/isearch');
+
+                if ($this->model_extension_module_isearch->hasEngine()) {
+                    if (isset($data['search']) && strlen($data['search']) > 0) {
+                        $filter_data = array(
+                            'filter_name' => $data['search']
+                        );
+                    } else if (isset($data['tags']) && !empty($data['tags'])) {
+                        $filter_data = array(
+                            'filter_tag' => is_array($data['tags']) ? implode(' ', $data['tags']) : $data['tags']
+                        );
+                    } else {
+                        $filter_data = null;
+                    }
+
+                    if (!is_null($filter_data)) {
+                        $sql .= ' AND p.product_id IN (' . $this->model_extension_module_isearch->filterSubquery($filter_data) . ') ';
+                    }
+                } else 
+            ]]></add>
+        </operation>
+    </file>
+</modification>
